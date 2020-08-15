@@ -27,6 +27,9 @@ class AppsCell : UITableViewCell{
     }
     
     func appDateSetup(data : Results){
+        if(self.genres.count > 0){
+            self.genres.removeAll()
+        }
         self.appImage.setURLImage(data.artworkUrl100 ?? "")
         self.appsName.setText(data.name ?? "")
         for  i in 0...(data.genres?.count ?? 0)-1{

@@ -23,14 +23,36 @@ class DetailVc: UIViewController {
     
     var genres : [String] = [String]()
     var result : Results?
+    var authorUrl = ""
+    var appUrl = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.appDateSetup(data: self.result!)
+        let tapAuthor = UITapGestureRecognizer(target: self, action: #selector(DetailVc.tapAuthorDetail))
+        appsAuthordetail.isUserInteractionEnabled = true
+        appsAuthordetail.addGestureRecognizer(tapAuthor)
         
+        let tapUrl = UITapGestureRecognizer(target: self, action: #selector(DetailVc.tapAppUrl))
+               appsstore.isUserInteractionEnabled = true
+               appsstore.addGestureRecognizer(tapUrl)
+         
+    }
+    
+    @objc
+    func tapAuthorDetail(sender:UITapGestureRecognizer) {
+      guard let url = URL(string:authorUrl) else { return }
+        UIApplication.shared.open(url)
+    }
+    
+    @objc
+    func tapAppUrl(sender:UITapGestureRecognizer) {
+      guard let url = URL(string:appUrl) else { return }
+        UIApplication.shared.open(url)
     }
     
     func appDateSetup(data : Results){
+        
         self.appImage.setURLImage(data.artworkUrl100 ?? "")
         self.appsName.setText(data.name ?? "")
         for  i in 0...(data.genres?.count ?? 0)-1{
@@ -41,8 +63,10 @@ class DetailVc: UIViewController {
         self.appsreleaseDate.setText(data.releaseDate ?? "", 18, fontStyle: .regular, isTitle: .no, textColor: .black)
         self.appsAuthor.setText(data.artistName ?? "",20, fontStyle: .bold, isTitle: .yes, textColor: .black)
         self.appsAuthordetail.setText(data.artistUrl ?? "")
+        authorUrl = data.artistUrl ?? ""
         self.copyrights.setText(data.copyright ?? "")
         self.appsstore.setText(data.url ?? "")
+        appUrl = data.url ?? ""
 //        self.hyperLink(label: self.appsstore, url: data.url ?? "")
 //        self.hyperLink(label: self.copyrights, url: data.artistUrl ?? "")
     }
